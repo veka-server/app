@@ -2,12 +2,13 @@
 
 namespace VekaServer\Framework;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 abstract class App {
 
     public function __construct()
     {
-        // utilisation du loader de composer
-        require 'vendor/autoload.php';
 
         // initialise le singleton de configuration
         \VekaServer\Config\Config::getInstance(__DIR__.'/config/config.php');
@@ -26,18 +27,23 @@ abstract class App {
         $this->after_router($request, $response);
 
         // si la reponse est presente ont l'affiche
-        if($response instanceof \Psr\Http\Message\ResponseInterface)
+        if($response instanceof ResponseInterface)
             $Dispatcher->send($response);
     }
 
     /**
      * Cette methode sera executer avant le router et le dispatcher
+     * @param ServerRequestInterface $request
+     * @return mixed
      */
-    public abstract function before_router($request);
+    public abstract function before_router(ServerRequestInterface $request);
 
     /**
      * Cette methode sera executer apres le router mais avant l'affichage
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @return mixed
      */
-    public abstract function after_router($request,\Psr\Http\Message\ResponseInterface $response);
+    public abstract function after_router(ServerRequestInterface $request,ResponseInterface $response);
 
 }
