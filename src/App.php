@@ -4,6 +4,8 @@ namespace VekaServer\Framework;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use VekaServer\Config\Config;
+use GuzzleHttp\Psr7\ServerRequest;
 
 abstract class App {
 
@@ -13,13 +15,13 @@ abstract class App {
         $this->AllErrorToException();
 
         // initialise le singleton de configuration
-        \VekaServer\Config\Config::getInstance($path.'/config/config.php');
+        Config::getInstance($path.'/config/config.php');
 
         // creation du dispatcher
         $Dispatcher = require_once($path.'/config/middleware.php');
 
         // recuperation de la requete recue
-        $request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+        $request = ServerRequest::fromGlobals();
 
         $this->before_router($request);
 
@@ -47,7 +49,7 @@ abstract class App {
                 // This error code is not included in error_reporting
                 return;
             }
-            throw new ErrorException($message, 0, $severity, $file, $line);
+            throw new \ErrorException($message, 0, $severity, $file, $line);
         });
     }
 
