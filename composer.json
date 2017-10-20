@@ -1,0 +1,22 @@
+{
+    "name": "veka-server/App",
+    "description": "Classe de demarage de mon framework",
+    "license": "MIT",
+    "keywords": ["config"],
+    "authors": [
+        {
+            "name": "Vanhaezebrouck Nicolas",
+            "email": "contact@veka-server.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "VekaServer\\Framework\\" : "src/"
+        }
+    },
+    "require": {
+        "veka-server/dispatcher": "^0.1.1",
+        "veka-server/rooter": "^0.1.3",
+        "veka-server/config": "^0.1.0"
+    }
+}
