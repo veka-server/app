@@ -1,5 +1,5 @@
 {
-    "name": "veka-server/App",
+    "name": "veka-server/app",
     "description": "Classe de demarage de mon framework",
     "license": "MIT",
     "keywords": ["config"],
