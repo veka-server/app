@@ -9,6 +9,8 @@ abstract class App {
 
     public function __construct($path)
     {
+        // si whoops installer on convertit les erreurs php en exception
+        $this->AllErrorToException();
 
         // initialise le singleton de configuration
         \VekaServer\Config\Config::getInstance($path.'/config/config.php');
@@ -29,6 +31,25 @@ abstract class App {
         // si la reponse est presente ont l'affiche
         if($response instanceof ResponseInterface)
             $Dispatcher->send($response);
+    }
+
+    /**
+     * Cette fonction Convertit les erreurs PHP en Exception pour
+     * fonctionner avec whoops
+     */
+    public function AllErrorToException(){
+
+        if(!class_exists('\\Middlewares\\Whoops'))
+            return ;
+
+        function exception_error_handler($severity, $message, $file, $line) {
+            if (!(error_reporting() & $severity)) {
+                // This error code is not included in error_reporting
+                return;
+            }
+            throw new ErrorException($message, 0, $severity, $file, $line);
+        }
+        set_error_handler("exception_error_handler");
     }
 
     /**
