@@ -7,14 +7,14 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class App {
 
-    public function __construct()
+    public function __construct($path)
     {
 
         // initialise le singleton de configuration
-        \VekaServer\Config\Config::getInstance(__DIR__.'/config/config.php');
+        \VekaServer\Config\Config::getInstance($path.'/config/config.php');
 
         // creation du dispatcher
-        $Dispatcher = require_once(__DIR__.'/config/middleware.php');
+        $Dispatcher = require_once($path.'/config/middleware.php');
 
         // recuperation de la requete recue
         $request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
