@@ -2,7 +2,7 @@
     "name": "veka-server/app",
     "description": "Classe de demarage de mon framework",
     "license": "MIT",
-    "keywords": ["config"],
+    "keywords": ["framework"],
     "authors": [
         {
             "name": "Vanhaezebrouck Nicolas",
