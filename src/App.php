@@ -6,8 +6,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use VekaServer\Config\Config;
 use GuzzleHttp\Psr7\ServerRequest;
+use VekaServer\Container\Container;
 
 abstract class App {
+
+    protected static $container;
 
     public function __construct($path)
     {
@@ -16,6 +19,9 @@ abstract class App {
 
         // initialise le singleton de configuration
         Config::getInstance($path.'/config/config.php');
+
+        // initialise le container
+        Container::getInstance($path.'/config/container.php');
 
         // creation du dispatcher
         $Dispatcher = require_once($path.'/config/middleware.php');
