@@ -9,9 +9,10 @@ class Model {
     /**
      * @param string $sql
      * @param array $data
+     * @return array
      */
     public static function exec(string $sql, array $data = array()){
-        Container::getInstance('Bdd')->exec($sql, $data);
+        return Container::getInstance()->get('Bdd')->exec($sql, $data);
     }
 
 }

@@ -13,7 +13,7 @@ class Controller
      */
     public function getView(string $templatePath, array $data = array()): string
     {
-        Container::getInstance('Renderer')->render($templatePath, $data);
+        return Container::getInstance()->get('Renderer')->render($templatePath, $data);
     }
 
 }
