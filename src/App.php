@@ -5,7 +5,6 @@ namespace VekaServer\Framework;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use VekaServer\Config\Config;
-use GuzzleHttp\Psr7\ServerRequest;
 use VekaServer\Container\Container;
 
 abstract class App {
@@ -24,21 +23,48 @@ abstract class App {
         Container::getInstance($path.'/config/container.php');
 
         // creation du dispatcher
-        $Dispatcher = require_once($path.'/config/middleware.php');
-
-        // recuperation de la requete recue
-        $request = ServerRequest::fromGlobals();
+        list($Dispatcher, $request) = require_once($path.'/config/middleware.php');
 
         $this->before_router($request);
 
-        // lance l'execution des middlewares et recupere la reponse
-        $response = $Dispatcher->process($request);
+        $response = $dispatcher->dispatch($request);
 
         $this->after_router($request, $response);
 
         // si la reponse est presente ont l'affiche
         if($response instanceof ResponseInterface)
-            $Dispatcher->send($response);
+            $this->showResponse($response);
+
+    }
+
+    /**
+     * Affiche une reponse a l'ecran
+     * @param ResponseInterface $response
+     */
+    public function showResponse(ResponseInterface $response){
+        $http_line = sprintf('HTTP/%s %s %s',
+            $response->getProtocolVersion(),
+            $response->getStatusCode(),
+            $response->getReasonPhrase()
+        );
+
+        header($http_line, true, $response->getStatusCode());
+
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+
+        $stream = $response->getBody();
+
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        while (!$stream->eof()) {
+            echo $stream->read(1024 * 8);
+        }
     }
 
     /**
