@@ -23,7 +23,7 @@ abstract class App {
         Container::getInstance($path.'/config/container.php');
 
         // creation du dispatcher
-        list($Dispatcher, $request) = require_once($path.'/config/middleware.php');
+        list($dispatcher, $request) = require_once($path.'/config/middleware.php');
 
         $this->before_router($request);
 
