@@ -19,7 +19,7 @@ class Model {
      * @param bool $check_conn
      * @return mixed
      */
-    public function connect(bool $check_conn = true){
+    public static function connect(bool $check_conn = true){
         return Container::getInstance()->get('Bdd')->connect($check_conn);
     }
 
@@ -30,30 +30,30 @@ class Model {
      * @return array|bool|false|int|resource
      * @throws \Exception
      */
-    public function open($sql, array $param_sql = array()){
+    public static function open($sql, array $param_sql = array()){
         return Container::getInstance()->get('Bdd')->open($sql, $param_sql);
     }
 
     /**
      * @throws \Exception
      */
-    public function beginTransaction(){
+    public static function beginTransaction(){
         return Container::getInstance()->get('Bdd')->beginTransaction();
     }
 
-    public function commit(){
+    public static function commit(){
         return Container::getInstance()->get('Bdd')->commit();
     }
 
-    public function rollback() {
+    public static function rollback() {
         return Container::getInstance()->get('Bdd')->rollback();
     }
 
-    public function fetch($stmt){
+    public static function fetch($stmt){
         return Container::getInstance()->get('Bdd')->fetch($stmt);
     }
 
-    public function fetchAll($stmt){
+    public static function fetchAll($stmt){
         return Container::getInstance()->get('Bdd')->fetchAll($stmt);
     }
 
