@@ -4,6 +4,7 @@ namespace VekaServer\Framework;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LogLevel;
 use VekaServer\Config\Config;
 use VekaServer\Container\Container;
 
@@ -11,30 +12,48 @@ abstract class App {
 
     protected static $container;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct($path)
     {
-        // si whoops installer on convertit les erreurs php en exception
-        $this->AllErrorToException();
+        try{
 
+            // si whoops installer on convertit les erreurs php en exception
+            $this->AllErrorToException();
+
+            self::initDependance($path);
+
+            // creation du dispatcher
+            list($dispatcher, $request) = require_once($path.'/config/middleware.php');
+
+            $this->before_router($request);
+
+            $response = $dispatcher->dispatch($request);
+
+            $this->after_router($request, $response);
+
+            // si la reponse est presente ont l'affiche
+            if($response instanceof ResponseInterface)
+                $this->showResponse($response);
+
+        }catch(\Exception $e){
+            if(Container::getInstance()->has('Log')){
+                /** @var \Psr\Log\LoggerInterface $log */
+                $log = Container::getInstance()->get('Log');
+                $log->log(LogLevel::ERROR,'', ['exception' => $e]);
+            }
+            throw $e;
+        }
+
+    }
+
+    public static function initDependance($path){
         // initialise le singleton de configuration
         Config::getInstance($path.'/config/config.php');
 
         // initialise le container
         Container::getInstance($path.'/config/container.php');
-
-        // creation du dispatcher
-        list($dispatcher, $request) = require_once($path.'/config/middleware.php');
-
-        $this->before_router($request);
-
-        $response = $dispatcher->dispatch($request);
-
-        $this->after_router($request, $response);
-
-        // si la reponse est presente ont l'affiche
-        if($response instanceof ResponseInterface)
-            $this->showResponse($response);
-
     }
 
     /**
