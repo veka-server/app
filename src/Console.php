@@ -1,10 +1,9 @@
 <?php
 
-namespace App\classe;
+namespace VekaServer\Framework;
 
 use Psr\Log\LogLevel;
 use VekaServer\Container\Container;
-use VekaServer\Framework\App;
 
 abstract class Console
 {
