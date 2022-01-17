@@ -42,6 +42,8 @@ abstract class Console
      */
     final private function getParams()
     {
+        global $argv;
+
         $param=[];
         $cmd_now='';
         if (isset($argv[0])) {
