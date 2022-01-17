@@ -25,7 +25,7 @@ abstract class Console
 
             $this->run($this->getParams());
 
-        }catch(\Exception $e){
+        }catch(\Throwable $e){
             if(Container::getInstance()->has('Log')){
                 /** @var \Psr\Log\LoggerInterface $log */
                 $log = Container::getInstance()->get('Log');
