@@ -19,9 +19,6 @@ abstract class App {
     {
         try{
 
-            // si whoops installer on convertit les erreurs php en exception
-            $this->AllErrorToException();
-
             self::initDependance($path);
 
             // creation du dispatcher
@@ -49,6 +46,10 @@ abstract class App {
     }
 
     public static function initDependance($path){
+
+        // on convertit les erreurs php en exception
+        self::AllErrorToException();
+        
         // initialise le singleton de configuration
         Config::getInstance($path.'/config/config.php');
 
@@ -90,11 +91,7 @@ abstract class App {
      * Cette fonction Convertit les erreurs PHP en Exception pour
      * fonctionner avec whoops
      */
-    public function AllErrorToException(){
-
-        if(!class_exists('\\Middlewares\\Whoops'))
-            return ;
-
+    public static function AllErrorToException(){
         set_error_handler(function($severity, $message, $file, $line){
             if (!(error_reporting() & $severity)) {
                 // This error code is not included in error_reporting
