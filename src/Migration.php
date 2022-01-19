@@ -40,7 +40,7 @@ class Migration
         }
 
         /** recuperer la liste des fichiers de migrations */
-        $files = array_diff(scandir($this->path_folder_migration), array('..', '.'));
+        $files = array_diff(scandir($this->path_folder_migration), array('..', '.', '.gitignore'));
 
         /** parcourir chaque fichier */
         foreach ($files as $file){
