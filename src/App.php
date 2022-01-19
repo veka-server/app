@@ -18,6 +18,7 @@ abstract class App {
     public function __construct($path)
     {
         try{
+            session_start();
 
             self::initDependance($path);
 
