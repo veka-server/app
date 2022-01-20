@@ -64,7 +64,6 @@ class Migration
                 try{
                     Model::rollback();
                 }catch (\Exception $e2){}
-                $migration_instance->downgrade();
             }
 
             $sql = 'INSERT INTO migration (filename, source) VALUES(:filename, :source);';
