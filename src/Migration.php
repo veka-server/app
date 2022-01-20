@@ -58,7 +58,14 @@ class Migration
 
             Model::beginTransaction();
 
-            $migration_instance->upgrade();
+            try{
+                $migration_instance->upgrade();
+            }catch (\Exception $e){
+                try{
+                    Model::rollback();
+                }catch (\Exception $e2){}
+                $migration_instance->downgrade();
+            }
 
             $sql = 'INSERT INTO migration (filename, source) VALUES(:filename, :source);';
             Model::exec($sql, ['s-filename' => $file, 's-source' => $this->source]);
