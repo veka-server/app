@@ -2,6 +2,8 @@
 
 namespace VekaServer\Framework;
 
+use VekaServer\Container\Container;
+
 class Migration
 {
 
