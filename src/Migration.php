@@ -59,13 +59,27 @@ class Migration
             Model::beginTransaction();
 
             try{
-                $migration_instance->upgrade();
-            }catch (\Exception $e){
+                $migration_instance->upgrade_creation();
+
+                Model::beginTransaction();
                 try{
+                    $migration_instance->upgrade_data();
+                }catch (\Exception $e){
                     Model::rollback();
-                }catch (\Exception $e2){}
+                    throw $e;
+                }
+
+            }catch (\Exception $e){
+                $migration_instance->downgrade_nettoyage();
+                throw $e;
             }
 
+            try{
+                $migration_instance->upgrade_nettoyage();
+            }catch (\Exception $e){
+                Container::getInstance()->get('Log')->warning('Migration Cleanup Failed : no rollback '.PHP_EOL.'You should cleanup manually', ['exception' => $e]);
+            }
+            
             $sql = 'INSERT INTO migration (filename, source) VALUES(:filename, :source);';
             Model::exec($sql, ['s-filename' => $file, 's-source' => $this->source]);
 
@@ -99,8 +113,28 @@ class Migration
 
         Model::beginTransaction();
 
-        $migration_instance->downgrade();
+        try{
+            $migration_instance->downgrade_creation();
 
+            Model::beginTransaction();
+            try{
+                $migration_instance->downgrade_data();
+            }catch (\Exception $e){
+                Model::rollback();
+                throw $e;
+            }
+
+        }catch (\Exception $e){
+            $migration_instance->upgrade_nettoyage();
+            throw $e;
+        }
+
+        try{
+            $migration_instance->downgrade_nettoyage();
+        }catch (\Exception $e){
+            Container::getInstance()->get('Log')->warning('Migration Cleanup Failed : no rollback '.PHP_EOL.'You should cleanup manually', ['exception' => $e]);
+        }
+        
         $sql = 'DELETE FROM migration WHERE filename = :filename AND source = :source;';
         Model::exec($sql, ['s-filename' => $rs[0]['filename'], 's-source' => $this->source]);
 
