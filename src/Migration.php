@@ -63,7 +63,10 @@ class Migration
             try{
                 $migration_instance->upgrade_creation();
 
-                Model::beginTransaction();
+                try{
+                    Model::beginTransaction();
+                }catch (\Exception $e){}
+                
                 try{
                     $migration_instance->upgrade_data();
                 }catch (\Exception $e){
@@ -118,7 +121,10 @@ class Migration
         try{
             $migration_instance->downgrade_creation();
 
-            Model::beginTransaction();
+            try{
+                Model::beginTransaction();
+            }catch (\Exception $e){}
+
             try{
                 $migration_instance->downgrade_data();
             }catch (\Exception $e){
