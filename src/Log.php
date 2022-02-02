@@ -3,6 +3,7 @@
 namespace VekaServer\Framework;
 
 use VekaServer\Container\Container;
+use Psr\Log\LogLevel;
 
 class Log {
 
