@@ -70,11 +70,13 @@ class Migration
                 try{
                     $migration_instance->upgrade_data();
                 }catch (\Exception $e){
+                    Container::getInstance()->get('Log')->warning('Migration upgrade_data Failed', ['exception' => $e]);
                     Model::rollback();
                     throw $e;
                 }
 
             }catch (\Exception $e){
+                Container::getInstance()->get('Log')->warning('Migration upgrade Failed', ['exception' => $e]);
                 $migration_instance->downgrade_nettoyage();
                 throw $e;
             }
