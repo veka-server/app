@@ -7,28 +7,28 @@ use VekaServer\Container\Container;
 class Lang {
 
     public static function get($key){
-        /** @var  $lang */
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
         return $lang->get($key);
     }
 
     public static function has($key): bool
     {
-        /** @var  $lang */
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
         return $lang->has($key);
     }
 
-    public static function set($key, $lang, $traduction){
-        /** @var  $lang */
+    public static function set($key, $lang_str, $traduction){
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
-        return $lang->set($key, $lang, $traduction);
+        return $lang->set($key, $lang_str, $traduction);
     }
 
-    public static function addLang($lang){
-        /** @var  $lang */
+    public static function addLang($lang_str){
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
-        return $lang->addLang($lang);
+        return $lang->addLang($lang_str);
     }
 
     /**
@@ -36,7 +36,7 @@ class Lang {
      */
     public static function getLang(): string
     {
-        /** @var  $lang */
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
         return $lang->getLang();
     }
@@ -44,11 +44,11 @@ class Lang {
     /**
      * @param string $lang
      */
-    public static function setLang(string $lang): void
+    public static function setLang(string $lang_str): void
     {
-        /** @var  $lang */
+        /** @var \VekaServer\Interfaces\LangInterface $lang */
         $lang = Container::getInstance()->get('Lang');
-        $lang->setLang($lang);
+        $lang->setLang($lang_str);
     }
 
 }
