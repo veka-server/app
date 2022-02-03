@@ -9,7 +9,7 @@ class Log {
 
     public static function log($level, $message, array $context = array())
     {
-        /** @var \Psr\Log\AbstractLogger $log */
+        /** @var \Psr\Log\LoggerInterface $log */
         $log = Container::getInstance()->get('Log');
         $log->log($level, $message, $context);
     }
