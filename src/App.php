@@ -54,6 +54,9 @@ abstract class App {
         // initialise le singleton de configuration
         Config::getInstance($path.'/config/config.php');
 
+        // parser les plugins
+        Plugin::getInstance($path.'/config/plugin.php');
+        
         // initialise le container
         Container::getInstance($path.'/config/container.php');
     }
