@@ -39,18 +39,19 @@ class Plugin
         $list = [Config::getInstance()->get('CSS_folder')];
         /** @var PluginInterface $plugin */
         foreach($this->plugin_list as $plugin){
-            $list[] = $plugin::getPathCSS();
+            $list = array_merge($plugin::getPathCSS(), $list);
         }
         return $list;
     }
 
     public function getAllJSFolders()
     {
-        $list = [Config::getInstance()->get('JS_folder')];
+        $list = [];
         /** @var PluginInterface $plugin */
         foreach($this->plugin_list as $plugin){
-            $list[] = $plugin::getPathJS();
+            $list = array_merge($plugin::getPathJS(), $list);
         }
+        $list[] = Config::getInstance()->get('JS_folder');
         return $list;
     }
 
