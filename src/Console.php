@@ -40,7 +40,7 @@ abstract class Console
     /**
      * @return array
      */
-    final private function getParams()
+    private function getParams()
     {
         global $argv;
 
