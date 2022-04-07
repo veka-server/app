@@ -148,7 +148,10 @@ class Migration
         $sql = 'DELETE FROM migration WHERE filename = :filename AND source = :source;';
         Model::exec($sql, ['s-filename' => $rs[0]['filename'], 's-source' => $this->source]);
 
-        Model::commit();
+        try{
+            Model::commit();
+        }catch (\Exception $e){}
+    
     }
 
 }
