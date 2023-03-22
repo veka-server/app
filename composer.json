@@ -1,6 +1,6 @@
 {
     "name": "veka-server/app",
-    "description": "Classe de demarage de mon framework",
+    "description": "Classe de demarrage de mon framework",
     "license": "MIT",
     "keywords": ["framework"],
     "authors": [
