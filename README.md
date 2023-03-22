@@ -1,5 +1,5 @@
 # App
-Classe de demarage de mon framework
+Classe de demarrage de mon framework
 
 
 ## Migration 
