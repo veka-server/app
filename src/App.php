@@ -11,6 +11,31 @@ use VekaServer\Container\Container;
 abstract class App {
 
     protected static $container;
+    protected static $header = [];
+
+    /**
+     * @return array
+     */
+    public static function getHeaders() :array
+    {
+        return self::$header;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getHeader($key) :string
+    {
+        return self::$header[$key] ?? '';
+    }
+
+    /**
+     * @param string $header
+     */
+    public static function setHeader(string $key, string $value) :void
+    {
+        self::$header[$key] = $value;
+    }
 
     /**
      * @throws \Exception
@@ -73,6 +98,11 @@ abstract class App {
         );
 
         header($http_line, true, $response->getStatusCode());
+
+        // surcharge des header via l'app
+        foreach (self::getHeaders() as $key => $header){
+            $response = $response->withHeader($key, $header);
+        }
 
         foreach ($response->getHeaders() as $name => $values) {
             foreach ($values as $value) {
