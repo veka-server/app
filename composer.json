@@ -15,9 +15,9 @@
         }
     },
     "require": {
-        "veka-server/rooter": "^0.1.3",
-        "veka-server/config": "^0.2.2",
-        "veka-server/container": "^0.1.1"
+        "veka-server/rooter": "^0.2",
+        "veka-server/config": "^0.2",
+        "veka-server/container": "^0.1"
     },
     "scripts": {
         "migration": [
